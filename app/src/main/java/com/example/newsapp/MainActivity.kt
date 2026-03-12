@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -13,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,6 +98,53 @@ fun NewsAppScreen(modifier: Modifier = Modifier) {
                 fontSize = 20.sp,
                 color = Color.LightGray
             )
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // 3. Últimas noticias (Carrusel Horizontal)
+        Text(
+            text = "Ultimas noticias",
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // LazyRow es para hacer scroll hacia los lados
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            items(3) { // Le decimos que dibuje 3 tarjetas de ejemplo
+                Box(
+                    modifier = Modifier
+                        .width(260.dp)
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(24.dp)) // Bordes redondeados de la tarjeta
+                        .background(Color(0xFF5C5CFF)) // El color azul de la foto
+                        .padding(20.dp)
+                ) {
+                    // Usamos un Column adentro para empujar el texto hacia abajo
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        Text(
+                            text = "El presidente de EE.UU. no muestra signos de arrepentimiento...",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            lineHeight = 24.sp
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "febrero 08 - 2024",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
