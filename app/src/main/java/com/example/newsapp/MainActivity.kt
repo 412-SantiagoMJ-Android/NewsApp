@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -20,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.newsapp.ui.theme.NewsAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -148,6 +151,69 @@ fun NewsAppScreen(modifier: Modifier = Modifier) {
         }
 
         Spacer(modifier = Modifier.height(32.dp))
+
+// 4. Título de Alrededor del mundo
+        Text(
+            text = "Alrededor del mundo",
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Preparamos los datos de las noticias con sus fotos de internet
+        val noticiasMundo = listOf(
+            Pair("El presidente de EE.UU. no muestra signos de...", "https://images.unsplash.com/photo-1508433957232-3107f5fd5995?q=80&w=886&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+            Pair("Bañarse en la piscina del desierto de Cleopatra", "https://images.unsplash.com/photo-1705939924260-70e1c3ba4c63?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+            Pair("Gigantes tecnológicos", "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400&auto=format&fit=crop"),
+            Pair("El rover de Marte envía", "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=400&auto=format&fit=crop")
+        )
+
+        // Cuadrícula de 2 columnas
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Recorremos nuestra lista de noticias
+            items(noticiasMundo.size) { index ->
+                val noticia = noticiasMundo[index]
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                ) {
+                    AsyncImage(
+                        model = noticia.second, // La URL de la foto
+                        contentDescription = "Foto de noticia",
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop, // Recorta la foto para que llene el espacio sin aplastarse
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+                    // 2. La caja de texto gris encima
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                            .background(Color(0xFFD9D9D9))
+                            .padding(12.dp)
+                    ) {
+                        Text(
+                            text = noticia.first, // El texto de la noticia
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            color = Color.Black,
+                            lineHeight = 18.sp
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
